@@ -1,0 +1,77 @@
+{
+  "info": {
+    "name": "Task Manager API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Elisa Perez\",\n  \"email\": \"elisa@gmail.com\",\n  \"password\": \"123456\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "auth", "register"] }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": { "type": "text/javascript", "exec": ["const data = pm.response.json();", "if (data.token) { pm.collectionVariables.set('token', data.token); }"] }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"elisa@gmail.com\",\n  \"password\": \"123456\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tasks",
+      "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+      "item": [
+        {
+          "name": "Get tasks",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/tasks", "host": ["{{baseUrl}}"], "path": ["api", "tasks"] } }
+        },
+        {
+          "name": "Create task",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Estudiar JWT\",\n  \"description\": \"Repasar middleware de autenticación\",\n  \"status\": \"pending\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/tasks", "host": ["{{baseUrl}}"], "path": ["api", "tasks"] }
+          }
+        },
+        {
+          "name": "Update task",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"status\": \"completed\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/tasks/1", "host": ["{{baseUrl}}"], "path": ["api", "tasks", "1"] }
+          }
+        },
+        {
+          "name": "Delete task",
+          "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/tasks/1", "host": ["{{baseUrl}}"], "path": ["api", "tasks", "1"] } }
+        },
+        {
+          "name": "Get tasks (sin token - debe dar 401)",
+          "request": { "auth": { "type": "noauth" }, "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/tasks", "host": ["{{baseUrl}}"], "path": ["api", "tasks"] } }
+        }
+      ]
+    }
+  ]
+}
