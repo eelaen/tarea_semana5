@@ -8,8 +8,8 @@ API RESTful segura para gestionar usuarios y tareas, con autenticación JWT.
 
 1. Clonar e instalar dependencias:
    ```bash
-   git clone https://github.com/TU_USUARIO/task-manager-api.git
-   cd task-manager-api
+   git clone https://github.com/eelaen/tarea_semana5.git
+   cd proyecto-task-manager-api
    npm install
    ```
 2. Crear la base de datos (elige una opción):
